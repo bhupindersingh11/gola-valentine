@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Gola 💖</title>
+
+<style>
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+font-family:'Comic Sans MS',cursive;
+overflow:hidden;
+}
+
+/* Card */
+.card{
+background:white;
+padding:40px;
+border-radius:25px;
+text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,0.3);
+position:relative;
+z-index:10;
+animation:pop 0.6s ease;
+}
+
+@keyframes pop{
+from{transform:scale(0);}
+to{transform:scale(1);}
+}
+
+h1{
+color:#ff4d6d;
+font-size:2em;
+}
+
+button{
+padding:15px 30px;
+font-size:1.2em;
+border:none;
+border-radius:50px;
+cursor:pointer;
+margin:10px;
+transition:0.3s;
+}
+
+#yesBtn{
+background:#ff4d6d;
+color:white;
+}
+
+#noBtn{
+background:#eee;
+color:#ff4d6d;
+position:absolute;
+}
+
+/* Shake */
+.shake{
+animation:shake 0.3s;
+}
+@keyframes shake{
+0%{transform:translateX(0);}
+25%{transform:translateX(-10px);}
+50%{transform:translateX(10px);}
+75%{transform:translateX(-10px);}
+100%{transform:translateX(0);}
+}
+
+/* Hearts */
+.heart{
+position:fixed;
+font-size:20px;
+animation:float 3s linear forwards;
+}
+@keyframes float{
+from{transform:translateY(0);opacity:1;}
+to{transform:translateY(-600px);opacity:0;}
+}
+
+/* Fireworks */
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+animation:explode 1s ease-out forwards;
+}
+@keyframes explode{
+from{transform:scale(1);opacity:1;}
+to{transform:scale(25);opacity:0;}
+}
+
+/* Confetti */
+@keyframes fall{
+to{transform:translateY(100vh) rotate(720deg);opacity:0;}
+}
+
+#loveMessage{
+font-size:2em;
+color:white;
+text-align:center;
+margin-top:20%;
+width:85%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+<h1>Gola 💖<br><br>Will you be my Valentine?</h1>
+<button id="yesBtn">YES 💘</button>
+<button id="noBtn">NO 💔</button>
+</div>
+
+<script>
+const noBtn=document.getElementById("noBtn");
+const yesBtn=document.getElementById("yesBtn");
+const card=document.getElementById("card");
+
+let yesScale=1;
+let noScale=1;
+
+// No button runs away + shrinks
+function evade(){
+const x=Math.random()*(window.innerWidth-100);
+const y=Math.random()*(window.innerHeight-100);
+noBtn.style.left=x+"px";
+noBtn.style.top=y+"px";
+
+yesScale+=0.25;
+yesBtn.style.transform=`scale(${yesScale})`;
+
+noScale-=0.1;
+if(noScale<0.15) noScale=0.15;
+noBtn.style.transform=`scale(${noScale})`;
+
+document.body.classList.add("shake");
+setTimeout(()=>document.body.classList.remove("shake"),300);
+}
+
+noBtn.addEventListener("mouseover",evade);
+noBtn.addEventListener("click",evade);
+
+// YES clicked = chaos mode
+yesBtn.addEventListener("click",()=>{
+card.remove();
+startHearts();
+startFireworks();
+startConfetti();
+typeMessage();
+});
+
+// Hearts
+function startHearts(){
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*100+"vw";
+heart.style.bottom="0px";
+heart.style.fontSize=Math.random()*20+20+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),3000);
+},150);
+}
+
+// Fireworks
+function startFireworks(){
+setInterval(()=>{
+const fw=document.createElement("div");
+fw.className="firework";
+fw.style.background=`hsl(${Math.random()*360},100%,60%)`;
+fw.style.left=Math.random()*100+"vw";
+fw.style.top=Math.random()*100+"vh";
+document.body.appendChild(fw);
+setTimeout(()=>fw.remove(),1000);
+},400);
+}
+
+// Confetti
+function startConfetti(){
+for(let i=0;i<180;i++){
+const conf=document.createElement("div");
+conf.style.position="fixed";
+conf.style.width="8px";
+conf.style.height="8px";
+conf.style.background=`hsl(${Math.random()*360},100%,50%)`;
+conf.style.left=Math.random()*100+"vw";
+conf.style.top="-10px";
+conf.style.animation="fall 3s linear forwards";
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),3000);
+}
+}
+
+// Typed love message
+function typeMessage(){
+const msg="Gola 💖 You just made me the happiest person alive. I promise endless love, laughter, hugs, and chocolate forever. 💘";
+const div=document.createElement("div");
+div.id="loveMessage";
+document.body.appendChild(div);
+
+let i=0;
+function type(){
+if(i<msg.length){
+div.innerHTML+=msg.charAt(i);
+i++;
+setTimeout(type,40);
+}
+}
+type();
+}
+</script>
+
+</body>
+</html>
