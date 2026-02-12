@@ -52,30 +52,6 @@ button{
   position:absolute;
 }
 
-/* Hearts */
-.heart{
-  position:fixed;
-  font-size:20px;
-  animation:float 3s linear forwards;
-}
-@keyframes float{
-  from{transform:translateY(0);opacity:1;}
-  to{transform:translateY(-600px);opacity:0;}
-}
-
-/* Fireworks */
-.firework{
-  position:fixed;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  animation:explode 1s ease-out forwards;
-}
-@keyframes explode{
-  from{transform:scale(1);opacity:1;}
-  to{transform:scale(25);opacity:0;}
-}
-
 /* Typed message */
 #loveMessage{
   font-size:2em;
@@ -99,7 +75,9 @@ const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const card = document.getElementById("card");
 
-// Function to move the No button randomly
+let yesScale = 1;
+
+// Function to move the No button randomly anywhere
 function moveNo() {
   const x = Math.random() * (window.innerWidth - 100);
   const y = Math.random() * (window.innerHeight - 50);
@@ -107,42 +85,12 @@ function moveNo() {
   noBtn.style.top = y + "px";
 }
 
-// Move No constantly
+// Move No constantly every 50ms
 setInterval(moveNo, 50);
 
-// Hearts floating
-function spawnHearts() {
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.bottom = "0px";
-    heart.style.fontSize = 20 + Math.random()*20 + "px";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(), 3000);
-  }, 150);
-}
-
-// Fireworks
-function spawnFireworks() {
-  setInterval(() => {
-    const fw = document.createElement("div");
-    fw.className = "firework";
-    fw.style.background = `hsl(${Math.random()*360},100%,60%)`;
-    fw.style.left = Math.random()*100 + "vw";
-    fw.style.top = Math.random()*100 + "vh";
-    document.body.appendChild(fw);
-    setTimeout(()=>fw.remove(),1000);
-  }, 400);
-}
-
-// YES clicked
+// YES button clicked
 yesBtn.addEventListener("click", () => {
   card.remove();
-  spawnHearts();
-  spawnFireworks();
-
   const msgDiv = document.createElement("div");
   msgDiv.id = "loveMessage";
   document.body.appendChild(msgDiv);
